@@ -10,6 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 import jwt
 from werkzeug.security import check_password_hash, generate_password_hash
 
+MAX_THOUGHT_SIZE = 1024
+
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = \
@@ -24,6 +26,11 @@ class User(db.Model):
     public_id = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(256), unique=True)
     password_hash = db.Column(db.String(80))
+
+class Thought(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(50))
+    text = db.Column(db.String(MAX_THOUGHT_SIZE))
 
 db.create_all()
 
@@ -112,6 +119,23 @@ def signup():
         return "Successfully registered", 201
     else:
         return "User already exists", 202
+
+@app.route("/new-thought", methods=["POST"])
+@token_required
+def new_thought(current_user):
+    data = request.form
+    text = data.get("text")
+
+    if not text:
+        return "Missing text", 400
+    if len(text) > MAX_THOUGHT_SIZE:
+        return "Thought is too long", 400
+
+    thought = Thought(user_id=current_user.public_id, text=text)
+    db.session.add(thought)
+    db.session.commit()
+
+    return "Success", 201
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
