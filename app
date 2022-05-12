@@ -34,28 +34,26 @@ class Thought(db.Model):
 
 db.create_all()
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get("x-access-token")
-        # return 401 if token is not passed
-        if not token:
-            return jsonify({"message" : "Missing token."}), 401
+@app.route("/signup", methods=["POST"])
+def signup():
+    data = request.form
+    email = data.get("email")
+    password = data.get("password")
 
-        try:
-            # decoding the payload to fetch the stored details
-            data = jwt.decode(token, app.config["SECRET_KEY"],
-                algorithms="HS256")
-            current_user = User.query \
-                .filter_by(public_id=data["user_id"]) \
-                .first()
-        except jwt.InvalidSignatureError:
-            return jsonify({ "message": "Invalid token." }), 401
-        except jwt.ExpiredSignatureError:
-            return jsonify({ "message": "Expired token." }), 401
-        # returns the current logged in users contex to the routes
-        return f(current_user, *args, **kwargs)
-    return decorated
+    user = User.query \
+        .filter_by(email=email) \
+        .first()
+    if not user:
+        user = User(
+            public_id=str(uuid.uuid4()),
+            email=email,
+            password_hash=generate_password_hash(password)
+        )
+        db.session.add(user)
+        db.session.commit()
+        return "Successfully registered", 201
+    else:
+        return "User already exists", 202
 
 @app.route("/auth", methods=["POST"])
 def auth():
@@ -99,26 +97,28 @@ def auth():
             {"WWW-Authenticate" : "Basic realm = \"Wrong Password.\""}
         )
 
-@app.route("/signup", methods=["POST"])
-def signup():
-    data = request.form
-    email = data.get("email")
-    password = data.get("password")
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get("x-access-token")
+        # return 401 if token is not passed
+        if not token:
+            return jsonify({"message" : "Missing token."}), 401
 
-    user = User.query \
-        .filter_by(email=email) \
-        .first()
-    if not user:
-        user = User(
-            public_id=str(uuid.uuid4()),
-            email=email,
-            password_hash=generate_password_hash(password)
-        )
-        db.session.add(user)
-        db.session.commit()
-        return "Successfully registered", 201
-    else:
-        return "User already exists", 202
+        try:
+            # decoding the payload to fetch the stored details
+            data = jwt.decode(token, app.config["SECRET_KEY"],
+                algorithms="HS256")
+            current_user = User.query \
+                .filter_by(public_id=data["user_id"]) \
+                .first()
+        except jwt.InvalidSignatureError:
+            return jsonify({ "message": "Invalid token." }), 401
+        except jwt.ExpiredSignatureError:
+            return jsonify({ "message": "Expired token." }), 401
+        # returns the current logged in users contex to the routes
+        return f(current_user, *args, **kwargs)
+    return decorated
 
 @app.route("/new-thought", methods=["POST"])
 @token_required
