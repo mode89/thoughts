@@ -52,9 +52,9 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
-        return "Successfully registered", 201
+        return jsonify({ "message": "Successfully registered" }), 201
     else:
-        return "User already exists", 202
+        return jsonify({ "message": "User already exists" }), 202
 
 @app.route("/auth", methods=["POST"])
 def auth():
@@ -65,9 +65,9 @@ def auth():
     if not data or not email or not password:
         # returns 401 if any email or / and password is missing
         return make_response(
-            "Could not verify",
+            jsonify({ "message": "Could not verify" }),
             401,
-            {"WWW-Authenticate" : "Basic realm = \"Login required.\""}
+            { "WWW-Authenticate": "Basic realm = \"Login required.\"" }
         )
 
     user = User.query \
@@ -77,9 +77,9 @@ def auth():
     if not user:
         # returns 401 if user does not exist
         return make_response(
-            "Could not verify",
+            jsonify({ "message": "Could not verify" }),
             401,
-            {"WWW-Authenticate" : "Basic realm = \"User does not exist.\""}
+            { "WWW-Authenticate": "Basic realm = \"User does not exist.\"" }
         )
 
     if check_password_hash(user.password_hash, password):
@@ -89,13 +89,13 @@ def auth():
             "exp": datetime.utcnow() + timedelta(minutes=5)
         }, app.config["SECRET_KEY"], algorithm="HS256")
 
-        return make_response(jsonify({"token" : token}), 201)
+        return make_response(jsonify({ "token": token }), 201)
     else:
         # returns 403 if password is wrong
         return make_response(
-            "Could not verify",
+            jsonify({ "message": "Could not verify" }),
             403,
-            {"WWW-Authenticate" : "Basic realm = \"Wrong Password.\""}
+            { "WWW-Authenticate": "Basic realm = \"Wrong Password.\"" }
         )
 
 def token_required(f):
@@ -104,7 +104,7 @@ def token_required(f):
         token = request.headers.get("x-access-token")
         # return 401 if token is not passed
         if not token:
-            return jsonify({"message" : "Missing token."}), 401
+            return jsonify({ "message": "Missing token" }), 401
 
         try:
             # decoding the payload to fetch the stored details
@@ -114,9 +114,9 @@ def token_required(f):
                 .filter_by(public_id=data["user_id"]) \
                 .first()
         except jwt.InvalidSignatureError:
-            return jsonify({ "message": "Invalid token." }), 401
+            return jsonify({ "message": "Invalid token" }), 401
         except jwt.ExpiredSignatureError:
-            return jsonify({ "message": "Expired token." }), 401
+            return jsonify({ "message": "Expired token" }), 401
         # returns the current logged in users contex to the routes
         return f(current_user, *args, **kwargs)
     return decorated
@@ -128,15 +128,15 @@ def new_thought(current_user):
     text = data.get("text")
 
     if not text:
-        return "Missing text", 400
+        return jsonify({ "message": "Missing text" }), 400
     if len(text) > MAX_THOUGHT_SIZE:
-        return "Thought is too long", 400
+        return jsonify({ "message": "Thought is too long" }), 400
 
     thought = Thought(user_id=current_user.public_id, text=text)
     db.session.add(thought)
     db.session.commit()
 
-    return "Success", 201
+    return jsonify({ "message": "Success" }), 201
 
 @app.route("/random-thought", methods=["GET"])
 @token_required
