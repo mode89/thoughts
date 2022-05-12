@@ -38,7 +38,7 @@ def token_required(f):
             data = jwt.decode(token, app.config["SECRET_KEY"],
                 algorithms="HS256")
             current_user = User.query \
-                .filter_by(public_id = data["public_id"]) \
+                .filter_by(public_id=data["user_id"]) \
                 .first()
         except jwt.InvalidSignatureError:
             return jsonify({ "message": "Invalid token." }), 401
@@ -77,7 +77,7 @@ def auth():
     if check_password_hash(user.password_hash, password):
         # generates the JWT Token
         token = jwt.encode({
-            "public_id": user.public_id,
+            "user_id": user.public_id,
             "exp" : datetime.utcnow() + timedelta(seconds=10)
         }, app.config["SECRET_KEY"], algorithm="HS256")
 
