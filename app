@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from datetime import datetime, timedelta
+from functools import wraps
 import sqlite3
 import uuid
 
@@ -27,6 +28,7 @@ class User(db.Model):
 db.create_all()
 
 def token_required(f):
+    @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get("x-access-token")
         # return 401 if token is not passed
