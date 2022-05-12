@@ -78,7 +78,7 @@ def auth():
         # generates the JWT Token
         token = jwt.encode({
             "user_id": user.public_id,
-            "exp" : datetime.utcnow() + timedelta(seconds=10)
+            "exp": datetime.utcnow() + timedelta(minutes=5)
         }, app.config["SECRET_KEY"], algorithm="HS256")
 
         return make_response(jsonify({"token" : token}), 201)
