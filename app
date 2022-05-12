@@ -8,6 +8,7 @@ import uuid
 from flask import Flask, jsonify, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 import jwt
+from sqlalchemy import func
 from werkzeug.security import check_password_hash, generate_password_hash
 
 MAX_THOUGHT_SIZE = 1024
@@ -136,6 +137,17 @@ def new_thought(current_user):
     db.session.commit()
 
     return "Success", 201
+
+@app.route("/random-thought", methods=["GET"])
+@token_required
+def random_thought(current_user):
+    thought = Thought.query \
+        .filter_by(user_id=current_user.public_id) \
+        .order_by(func.random()) \
+        .first()
+    if not thought:
+        return jsonify({ "message": "There are no thoughts" }), 404
+    return jsonify({ "message": thought.text }), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
