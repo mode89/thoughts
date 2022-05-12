@@ -6,6 +6,7 @@ import subprocess as sp
 
 host_work_dir = Path(os.getcwd())
 sp.run(["docker", "run",
+    "--env", "THOUGHTS_CONFIG=thoughts.cfg",
     "--interactive",
     "--name", "thoughts",
     "--publish", "5000:5000",

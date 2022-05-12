@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta
 from functools import wraps
+import json
 import sqlite3
 import uuid
 
@@ -15,8 +16,7 @@ MAX_THOUGHT_SIZE = 1024
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = \
-    "0272a723777cd31318fee787e3001b96bf5ea49417424b9ec542b2f6d459e96c"
+app.config.from_envvar("THOUGHTS_CONFIG")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
