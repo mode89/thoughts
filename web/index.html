@@ -5,6 +5,22 @@
         <link rel="stylesheet" href="main.css"/>
     </head>
     <body>
+        <template id="signin">
+            <input id="email" class="input-field" placeholder="E-mail"/>
+            <input id="password" class="input-field" placeholder="Password"/>
+            <button id="submit">Sign In</button>
+        </template>
+
+        <template id="signup">
+            <input id="email" class="input-field" placeholder="E-mail"/>
+            <input id="password" class="input-field" placeholder="Password"/>
+            <button id="submit">Sign Up</button>
+        </template>
+
         <div id="content"></div>
+
+        <script>
+            $("#content").html($("#signup").html())
+        </script>
     </body>
 </html>
