@@ -52,3 +52,10 @@ html, body {
     width: 100%;
     text-align: center;
 }
+
+#random-thought {
+    text-align: justify;
+    padding: 5%;
+    font-size: 30px;
+    overflow: auto;
+}
