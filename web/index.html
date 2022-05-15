@@ -5,27 +5,46 @@
         <link rel="stylesheet" href="main.css"/>
     </head>
     <body>
-        <template id="signin">
-            <input id="email" class="input-field" placeholder="E-mail"/>
-            <input id="password" class="input-field" placeholder="Password"/>
-            <button id="submit">Sign In</button>
+        <template class="signin">
+            <div id="signin">
+                <div id="center">
+                    <input id="email"
+                        class="input"
+                        placeholder="E-mail"/>
+                    <input id="password"
+                        class="input"
+                        placeholder="Password"/>
+                    <button id="submit" class="button">Sign In</button>
+                </div>
+            </div>
         </template>
 
-        <template id="signup">
-            <input id="email" class="input-field" placeholder="E-mail"/>
-            <input id="password" class="input-field" placeholder="Password"/>
-            <button id="submit">Sign Up</button>
+        <template class="signup">
+            <div id="signup">
+                <div id="center">
+                    <input id="email"
+                        class="input"
+                        placeholder="E-mail"/>
+                    <input id="password"
+                        class="input"
+                        placeholder="Password"/>
+                    <button id="submit" class="button">Sign Up</button>
+                </div>
+            </div>
         </template>
 
-        <template id="new-thought">
-            <input id="input" placeholder="Something worth remembering"
-                autofocus/>
+        <template class="new-thought">
+            <div id="new-thought">
+                <textarea id="text"
+                    placeholder="Something worth remembering"
+                    autofocus></textarea>
+            </div>
         </template>
 
         <div id="content"></div>
 
         <script>
-            $("#content").html($("#signup").html())
+            $("#content").html($(".signin").html())
         </script>
     </body>
 </html>

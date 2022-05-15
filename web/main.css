@@ -2,3 +2,53 @@ html, body {
     margin: 0px;
     height: 100%;
 }
+
+.input {
+    margin: 5px;
+    border-width: 0px;
+    border-bottom-width: 2px;
+}
+
+.button {
+    margin: 5px;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+#signin {
+    display: flex;
+    justify-content: center;
+}
+
+#signin > #center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#signup {
+    display: flex;
+    justify-content: center;
+}
+
+#signup > #center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#new-thought {
+    height: 100%;
+    display: flex;
+}
+
+#new-thought > #text {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+}
