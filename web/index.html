@@ -2,43 +2,85 @@
 <html>
     <head>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"></script>
+
         <link rel="stylesheet" href="main.css"/>
     </head>
     <body>
         <template class="signin">
-            <div id="signin">
-                <div id="center">
-                    <input id="email"
-                        class="input"
-                        placeholder="E-mail"/>
-                    <input id="password"
-                        class="input"
-                        placeholder="Password"/>
-                    <button id="submit" class="button">Sign In</button>
+            <form id="signin">
+                <div id="center" class="container">
+                    <div class="row">
+                        <div class="col">
+                            <input id="email"
+                                type="email"
+                                class="form-control my-1"
+                                placeholder="E-mail"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input id="password"
+                                type="password"
+                                class="form-control my-1"
+                                placeholder="Password"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit"
+                                style="width: 100%"
+                                class="btn btn-primary my-1">
+                                Sign In
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </template>
 
         <template class="signup">
-            <div id="signup">
-                <div id="center">
-                    <input id="email"
-                        class="input"
-                        placeholder="E-mail"/>
-                    <input id="password"
-                        class="input"
-                        placeholder="Password"/>
-                    <button id="submit" class="button">Sign Up</button>
+            <form id="signup">
+                <div id="center" class="container">
+                    <div class="row">
+                        <div class="col">
+                            <input id="email"
+                                type="email"
+                                class="form-control my-1"
+                                placeholder="E-mail"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input id="password"
+                                type="password"
+                                class="form-control my-1"
+                                placeholder="Password"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit"
+                                style="width: 100%;"
+                                class="btn btn-primary my-1">
+                                Sign Up
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </template>
 
         <template class="new-thought">
-            <div id="new-thought">
+            <form id="new-thought">
                 <textarea id="text"
+                    class="form-control"
                     placeholder="Something worth remembering"
                     autofocus></textarea>
-            </div>
+            </form>
         </template>
 
         <template class="random-thought">

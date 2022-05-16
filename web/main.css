@@ -3,16 +3,6 @@ html, body {
     height: 100%;
 }
 
-.input {
-    margin: 5px;
-    border-width: 0px;
-    border-bottom-width: 2px;
-}
-
-.button {
-    margin: 5px;
-}
-
 #content {
     display: flex;
     flex-direction: column;
@@ -20,26 +10,12 @@ html, body {
     height: 100%;
 }
 
-#signin {
-    display: flex;
-    justify-content: center;
-}
-
 #signin > #center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-#signup {
-    display: flex;
-    justify-content: center;
+    width: 15em;
 }
 
 #signup > #center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 15em;
 }
 
 #new-thought {
@@ -48,14 +24,12 @@ html, body {
 }
 
 #new-thought > #text {
-    box-sizing: border-box;
-    width: 100%;
-    text-align: center;
+    margin: 10px;
 }
 
 #random-thought {
     text-align: justify;
     padding: 5%;
-    font-size: 30px;
+    font-size: 1.1rem;
     overflow: auto;
 }
