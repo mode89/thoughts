@@ -1,5 +1,19 @@
-FROM python:3.9-alpine
+FROM clojure:temurin-18-lein-alpine
 
-RUN pip install flask
-RUN pip install flask_sqlalchemy
-RUN pip install pyjwt
+RUN apk --update add \
+        g++ \
+        musl-dev \
+        nodejs \
+        npm \
+        python3 \
+        python3-dev \
+        py3-pip
+RUN pip install \
+        flask \
+        flask_sqlalchemy \
+        pyjwt
+
+ARG HOST_GID
+ARG HOST_UID
+RUN addgroup -g ${HOST_GID:?} user && \
+    adduser -u ${HOST_UID:?} -G user -D user
