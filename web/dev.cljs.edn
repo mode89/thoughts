@@ -1,2 +1,3 @@
-^{:auto-bundle :webpack}
+^{:auto-bundle :webpack
+  :css-dirs ["resources/public/css"]}
 {:main thoughts.core}
