@@ -50,4 +50,7 @@
                 :placeholder "Something worth remembering"
                 :auto-focus true}]])
 
+(defn random-thought [text]
+  [:div {:id "random-thought"} text])
+
 (rdom/render [signin-form] (js/document.getElementById "app"))
