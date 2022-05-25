@@ -39,4 +39,11 @@
                          :class "btn btn-primary my-1"}
                          "Sign in"])]))
 
+(defn new-thought-form []
+  [:form {:id "new-thought"}
+    [:textarea {:id "text"
+                :class "form-control"
+                :placeholder "Something worth remembering"
+                :auto-focus true}]])
+
 (rdom/render [signin-form] (js/document.getElementById "app"))
