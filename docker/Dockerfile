@@ -10,6 +10,7 @@ RUN apk --update add \
         py3-pip
 RUN pip install \
         flask \
+        flask-cors \
         flask_sqlalchemy \
         pyjwt
 

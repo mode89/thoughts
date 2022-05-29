@@ -7,6 +7,7 @@ import sqlite3
 import uuid
 
 from flask import Flask, jsonify, make_response, request
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import jwt
 from sqlalchemy import func
@@ -19,6 +20,8 @@ app = Flask(__name__)
 app.config.from_envvar("THOUGHTS_CONFIG")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+cors = CORS(app)
 
 db = SQLAlchemy(app)
 
