@@ -1,4 +1,4 @@
-(ns thoughts.core
+(ns ^:figwheel-hooks thoughts.core
   (:require [cljs-http.client :as http]
             [clojure.core.async :refer [chan close! go go-loop put! <!]]
             [reagent.core :as r]
@@ -88,3 +88,7 @@
         (swap! state assoc :token (get-in response [:body :token]))
         (js/alert "Failed to authenticate."))
       (recur))))
+
+(defn ^:before-load before-load []
+  (do
+    (close! go-authentication)))
