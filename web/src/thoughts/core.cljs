@@ -2,13 +2,16 @@
   (:require [cljs-http.client :as http]
             [clojure.core.async :refer [chan close! go go-loop put! <!]]
             [reagent.core :as r]
-            [reagent.dom :as rdom]))
+            [reagent.dom :as rdom]
+            [reitit.coercion.spec :as rcs]
+            [reitit.frontend :as rf]
+            [reitit.frontend.easy :as rfe]))
 
 (def BACKEND-URL "http://192.168.0.101:5000")
 
 (def credentials (chan))
 
-(defn signin-form []
+(defn signin-view [route]
   (let [row (fn [x] [:div {:class "row"}
                       [:div {:class "col"}
                         x]])
@@ -37,7 +40,7 @@
                        :class "btn btn-primary my-1"}
                        "Sign in"])]]))
 
-(defn signup-form []
+(defn signup-view [route]
   (let [row (fn [x] [:div {:class "row"}
                       [:div {:class "col"}
                         x]])]
@@ -60,22 +63,23 @@
                        :class "btn btn-primary my-1"}
                        "Sign up"])]]))
 
-(defn new-thought-form []
+(defn new-thought-view [route]
   [:form {:id "new-thought"}
     [:textarea {:id "text"
                 :class "form-control"
                 :placeholder "Something worth remembering"
                 :auto-focus true}]])
 
-(defn random-thought [text]
-  [:div {:id "random-thought"} text])
+(defn random-thought-view [route]
+  (let [{:keys [path query]} (:parameters route)
+        {:keys [id]} path]
+  [:div {:id "random-thought"} id]))
 
-(defonce state (r/atom {:content (signin-form)}))
+(defonce token (r/atom nil))
+(defonce route (r/atom nil))
 
-(defn content []
-  (:content @state))
-
-(rdom/render [content] (js/document.getElementById "app"))
+(defn current-page []
+  [(:view (:data @route)) @route])
 
 (defn authenticate [credentials]
   (http/post (str BACKEND-URL "/auth") {:form-params credentials}))
@@ -85,10 +89,27 @@
     (let [cred (<! credentials)
           response (<! (authenticate (select-keys cred [:email :password])))]
       (if (:success response)
-        (swap! state assoc :token (get-in response [:body :token]))
+        (do
+          (reset! token (get-in response [:body :token]))
+          (rfe/replace-state ::random-thought {:id 42}))
         (js/alert "Failed to authenticate."))
       (recur))))
 
 (defn ^:before-load before-load []
   (do
     (close! go-authentication)))
+
+(defn init! []
+  (rfe/start!
+    (rf/router
+      [["/"
+         {:name ::root
+          :view signin-view}]
+       ["/random-thought/{id}"
+         {:name ::random-thought
+          :view random-thought-view}]])
+    #(reset! route %)
+    {:use-fragment true})
+  (rdom/render [current-page] (js/document.getElementById "app")))
+
+(init!)

@@ -1,6 +1,8 @@
 (defproject thoughts "0.1.0"
   :dependencies [
     [cljs-http "0.1.46"]
+    [metosin/reitit-frontend "0.5.18"]
+    [metosin/reitit-spec "0.5.18"]
     [org.clojure/core.async "1.5.648"]
     [reagent "1.1.1"]]
   :profiles {:dev {:dependencies [
