@@ -68,7 +68,10 @@
     [:textarea {:id "text"
                 :class "form-control"
                 :placeholder "Something worth remembering"
-                :auto-focus true}]])
+                :auto-focus true}]
+    [:button {:type "submit"
+              :class "btn btn-primary"}
+              "Save"]])
 
 (defn random-thought-view [route]
   (let [{:keys [path query]} (:parameters route)

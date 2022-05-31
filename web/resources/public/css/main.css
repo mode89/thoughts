@@ -21,10 +21,16 @@ html, body {
 #new-thought {
     height: 100%;
     display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
 
 #new-thought > #text {
-    margin: 10px;
+    flex-grow: 1;
+}
+
+#new-thought > button {
+    margin-top: 10px
 }
 
 #random-thought {
