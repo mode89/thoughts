@@ -76,7 +76,12 @@
 (defn random-thought-view [route]
   (let [{:keys [path query]} (:parameters route)
         {:keys [id]} path]
-  [:div {:id "random-thought"} id]))
+    [:div {:id "random-thought"}
+      [:div {:id "text"} id]
+      [:button {:id "new-thought-btn"
+                :class "btn"
+                :on-click #(rfe/push-state ::new-thought)}
+        "New thought"]]))
 
 (defonce token (r/atom nil))
 (defonce route (r/atom nil))
@@ -110,7 +115,10 @@
           :view signin-view}]
        ["/random-thought/{id}"
          {:name ::random-thought
-          :view random-thought-view}]])
+          :view random-thought-view}]
+       ["/new-thought"
+         {:name ::new-thought
+          :view new-thought-view}]])
     #(reset! route %)
     {:use-fragment true})
   (rdom/render [current-page] (js/document.getElementById "app")))

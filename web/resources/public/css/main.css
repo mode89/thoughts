@@ -34,8 +34,20 @@ html, body {
 }
 
 #random-thought {
-    text-align: justify;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+#random-thought > #text {
+    flex-grow: 1;
+    text-align: center;
     padding: 5%;
     font-size: 1.1rem;
     overflow: auto;
+}
+
+#random-thought > #new-thought-btn {
+    align-self: end;
 }
